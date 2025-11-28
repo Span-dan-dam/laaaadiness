@@ -1,2 +1,2 @@
 # laaaadiness
-here is my time pass hobby
+nothing just time passs🙂
