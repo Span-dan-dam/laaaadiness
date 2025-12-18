@@ -1,13 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 typedef struct{
     int row;
     int col;
     float **data;
 } matrix;
- 
-matrix create_matrix (int n ,int m){
+void seed_randomizer(){
+    srand(time(NULL));
+}
+    matrix create_matrix (int n ,int m){
     matrix matrix;
     matrix.row= n;
     matrix.col= m;
@@ -19,9 +22,11 @@ matrix create_matrix (int n ,int m){
         perror("malloc failed");
         exit(EXIT_FAILURE);
     }
+    int k=1;
     for(int i=0;i<n;i++){
        for(int j=0;j<m;j++){
-            matrix.data[i][j]= 3 ;
+            matrix.data[i][j]= k ;
+            k++;
         } 
     }
     return matrix;
@@ -96,4 +101,30 @@ matrix multiply_matrix_matrix(matrix A,matrix B){
         }
     }
     return C;
+}
+matrix transpose_matrix (matrix A){
+    matrix B = create_matrix(A.col,A.row);
+    for(int i = 0; i < A.row ; i++){
+        for(int j = 0; j < A.row ; j++){
+            B.data[j][i]= A.data[i][j];
+        }
+    }
+    return B;
+}
+
+matrix randomize_matrix(matrix M){
+    matrix A = create_matrix(M.row,M.col);
+    float max = 1;
+    float min = -1;
+    int data;
+    for(int i = 0; i < A.row ; i++){
+        for(int j = 0; j < A.col ; j++){
+            data = i + j;
+            data = data<<3;
+            data = data<<15;
+            data = data<<7;
+            A.data[i][j] = data;
+        }
+    }
+    return A;
 }
