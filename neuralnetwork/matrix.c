@@ -116,14 +116,16 @@ matrix randomize_matrix(matrix M){
     matrix A = create_matrix(M.row,M.col);
     float max = 1;
     float min = -1;
-    int data;
+    int data,k=0;
     for(int i = 0; i < A.row ; i++){
         for(int j = 0; j < A.col ; j++){
-            data = i + j;
+            data = 51 + k + i + j;
             data = data<<3;
             data = data<<15;
             data = data<<7;
-            A.data[i][j] = data;
+            data = (data/30000);
+            A.data[i][j]=((float)data/100000.0);
+            k+=2;
         }
     }
     return A;
