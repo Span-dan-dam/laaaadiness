@@ -5,12 +5,12 @@ typedef struct{
 } matrix;
  
 void seed_randomizer();
-matrix create_matrix (int n ,int m);
-void free_matrix(matrix matrix);
-void print_matrix(matrix matrix);
-matrix add_matrix(matrix A, matrix B);
-matrix substract_matrix(matrix A, matrix B);
-matrix multiply_matrix_const(matrix A, float k);
-matrix multiply_matrix_matrix(matrix A,matrix B);
-matrix transpose_matrix(matrix A);
-matrix randomize_matrix(matrix A);
+void create_matrix (int n ,int m ,matrix* matrix);
+void free_matrix(matrix* matrix);
+void print_matrix(matrix* matrix);
+void add_matrix(matrix* A, matrix* B, matrix* C);
+void substract_matrix(matrix* A, matrix* B, matrix* C);
+void multiply_matrix_const(matrix* A, float k,matrix* C);
+void multiply_matrix_matrix(matrix* A,matrix* B , matrix* C);
+void transpose_matrix(matrix* A,matrix* B);
+void randomize_matrix(matrix* A);

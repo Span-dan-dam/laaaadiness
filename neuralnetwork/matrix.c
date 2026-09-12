@@ -10,123 +10,106 @@ typedef struct{
 void seed_randomizer(){
     srand(time(NULL));
 }
-    matrix create_matrix (int n ,int m){
-    matrix matrix;
-    matrix.row= n;
-    matrix.col= m;
-    matrix.data= (float **)malloc(matrix.row * sizeof(float *));
+void create_matrix (int n ,int m ,matrix* Matrix){
+    Matrix->row= n;
+    Matrix->col= m;
+    Matrix->data= (float **)malloc(Matrix->row * sizeof(float *));
     for(int i=0;i<n;i++){
-        matrix.data[i]= (float *)malloc(matrix.col * sizeof(float));
+        Matrix->data[i]= (float *)malloc(Matrix->col * sizeof(float));
     }
-    if (!matrix.data) {
+    if (!Matrix->data) {
         perror("malloc failed");
         exit(EXIT_FAILURE);
-    }
-    int k=1;
-    for(int i=0;i<n;i++){
-       for(int j=0;j<m;j++){
-            matrix.data[i][j]= k ;
-            k++;
-        } 
-    }
-    return matrix;
+    } 
 }
 
-void free_matrix(matrix matrix){
-    for(int i=0;i < matrix.row;i++){
-        free(matrix.data[i]);
+void free_matrix(matrix* matrix){
+    for(int i=0;i < matrix->row;i++){
+        free(matrix->data[i]);
     }
-    free(matrix.data);
+    free(matrix->data);
 }
 
-void print_matrix(matrix matrix){
-    for(int i=0;i < matrix.row;i++){
-       for(int j=0;j < matrix.col;j++){
-            printf("%f  ",matrix.data[i][j]);
+void print_matrix(matrix* matrix){
+    printf("\n__________________________________\n");
+    for(int i=0;i < matrix->row;i++){
+       for(int j=0;j < matrix->col;j++){
+            printf("%f|",matrix->data[i][j]);
         }
-        printf("\n");
+        printf("\n__________________________________\n");
     }
 }
 
-matrix add_matrix(matrix A, matrix B){
-    if(A.row != B.row || A.col != B.col){
+void add_matrix(matrix* A, matrix* B, matrix* C){
+    if(A->row != B->row || A->col != B->col){
         printf("Error: Matrices dimensions do not match for addition.\n");
         exit(EXIT_FAILURE);
     }
-    matrix C = create_matrix(A.row, A.col);
-    for(int i=0;i < A.row;i++){
-       for(int j=0;j < A.col;j++){
-            C.data[i][j] = A.data[i][j] + B.data[i][j];
+    create_matrix(A->row, A->col,C);
+    for(int i=0;i < A->row;i++){
+       for(int j=0;j < A->col;j++){
+            C->data[i][j] = A->data[i][j] + B->data[i][j];
         }
     }
-    return C;
 }
 
-matrix substract_matrix(matrix A, matrix B){
-    if(A.row != B.row || A.col != B.col){
+void substract_matrix(matrix* A, matrix* B ,matrix* C){
+    if(A->row != B->row || A->col != B->col){
         printf("Error: Matrices dimensions do not match for subtraction.\n");
         exit(EXIT_FAILURE);
     }
-    matrix C = create_matrix(A.row, A.col);
-    for(int i=0;i < A.row;i++){
-       for(int j=0;j < A.col;j++){
-            C.data[i][j] = A.data[i][j] - B.data[i][j];
+    create_matrix(A->row, A->col,C);
+    for(int i=0;i < A->row;i++){
+       for(int j=0;j < A->col;j++){
+            C->data[i][j] = A->data[i][j] - B->data[i][j];
         }
     }
-    return C;
 }
 
-matrix multiply_matrix_const(matrix A, float k){
-    matrix C = create_matrix(A.row, A.col);
-    for(int i=0;i < A.row;i++){
-       for(int j=0;j < A.col;j++){
-            C.data[i][j] = A.data[i][j] * k;
+void multiply_matrix_const(matrix* A, float k , matrix* C){
+    create_matrix(A->row, A->col,C);
+    for(int i=0;i < A->row;i++){
+       for(int j=0;j < A->col;j++){
+            C->data[i][j] = A->data[i][j] * k;
         }
     }
-    return C;
 }
 
-matrix multiply_matrix_matrix(matrix A,matrix B){
-    if(A.col != B.row ){
+void multiply_matrix_matrix(matrix* A,matrix* B , matrix* C){
+    if(A->col != B->row ){
         printf("Error:Matrices dimentions do not match for matrix multiplaction");
         exit(EXIT_FAILURE);
     }
-    matrix C = create_matrix(A.row,B.col);
-    for(int i=0;i < A.row;i++){
-        for(int j=0;j < B.col; j++){
-            C.data[i][j]= 0;
-            for(int k=0;k < A.col;k++){
-                C.data[i][j] += (A.data[i][k] * B.data[k][j]);
+    create_matrix(A->row,B->col,C);
+    for(int i=0;i < A->row;i++){
+        for(int j=0;j < B->col; j++){
+            C->data[i][j]= 0;
+            for(int k=0;k < A->col;k++){
+                C->data[i][j] += (A->data[i][k] * B->data[k][j]);
             }
         }
     }
-    return C;
 }
-matrix transpose_matrix (matrix A){
-    matrix B = create_matrix(A.col,A.row);
-    for(int i = 0; i < A.row ; i++){
-        for(int j = 0; j < A.row ; j++){
-            B.data[j][i]= A.data[i][j];
+void transpose_matrix (matrix* A, matrix* B){
+    create_matrix(A->col,A->row,B);
+    for(int i = 0; i < A->row ; i++){
+        for(int j = 0; j < A->row ; j++){
+            B->data[j][i]= A->data[i][j];
         }
     }
-    return B;
 }
 
-matrix randomize_matrix(matrix M){
-    matrix A = create_matrix(M.row,M.col);
-    float max = 1;
-    float min = -1;
+void randomize_matrix(matrix* M){
     int data,k=0;
-    for(int i = 0; i < A.row ; i++){
-        for(int j = 0; j < A.col ; j++){
+    for(int i = 0; i < M-> row ; i++){
+        for(int j = 0; j < M-> col ; j++){
             data = 51 + k + i + j;
             data = data<<3;
             data = data<<15;
             data = data<<7;
             data = (data/30000);
-            A.data[i][j]=((float)data/100000.0);
+            M-> data[i][j]=((float)data/100000.0);
             k+=2;
         }
     }
-    return A;
 }
