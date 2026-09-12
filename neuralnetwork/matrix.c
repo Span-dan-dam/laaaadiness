@@ -113,3 +113,10 @@ void randomize_matrix(matrix* M){
         }
     }
 }
+void acctivation_function(matrix* A, float* Acti_func(float), matrix* B){
+       for(int i = 0; i < A-> row ; i++){
+            for(int j = 0; j < A-> col ; j++){
+            B->data[i][j] = acti_func(A->data[i][j]);
+         }
+    }
+}    

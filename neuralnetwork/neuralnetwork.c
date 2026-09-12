@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include "matrix.h"
 
+float tanh(float x){
+    return (exp(x) - exp(-x)) / (exp(x) + exp(-x));
+}
+
 typedef struct{
     int input_num;
     matrix inputs;
@@ -57,9 +61,20 @@ void create_neural_network(neural_network* brain, int input_num, int output_num,
 void feedforword (neural_network* brain , matrix* input, matrix* output){
     //print_matrix(input);
     matrix hidden_layer1,hidden_layer2; //i am using the layers alternatingly;
-    multiply_matrix_matrix(&brain->input_hidden_weights,input,&hidden_layer1);
-    print_matrix(&hidden_layer1);
 
+    // input layer to hidden layer0;
+
+    //mulitiplayaing the input layer with the weights of hidden layer0;
+    multiply_matrix_matrix(&brain->input_hidden_weights,input,&hidden_layer1); 
+    //print_matrix(&hidden_layer1);
+
+    //adding the hidden layer0 bias;
     add_matrix(&hidden_layer1,&brain->hidden_biases[0],&hidden_layer2);
-    print_matrix(&hidden_layer2);
+    //print_matrix(&hidden_layer2);
+
+    //going through the activation function;
+    activation_function(&hidden_layer2, &tanh, &hidden_layer1);
+    //print_matrix(&hidden_layer1);
+    
+    
 }
