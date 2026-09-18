@@ -93,7 +93,7 @@ void multiply_matrix_matrix(matrix* A,matrix* B , matrix* C){
 void transpose_matrix (matrix* A, matrix* B){
     create_matrix(A->col,A->row,B);
     for(int i = 0; i < A->row ; i++){
-        for(int j = 0; j < A->row ; j++){
+        for(int j = 0; j < A->col ; j++){
             B->data[j][i]= A->data[i][j];
         }
     }
@@ -113,10 +113,10 @@ void randomize_matrix(matrix* M){
         }
     }
 }
-void acctivation_function(matrix* A, float* Acti_func(float), matrix* B){
+void activation_function(matrix* A, float (*Acti_func)(float), matrix* B){
        for(int i = 0; i < A-> row ; i++){
             for(int j = 0; j < A-> col ; j++){
-            B->data[i][j] = acti_func(A->data[i][j]);
+          B->data[i][j] = Acti_func(A->data[i][j]);
          }
     }
 }    
